@@ -3,10 +3,9 @@
 
 #include "mainMenu.h"
 
-int main() {
+int main(void) {
     srand(time(NULL));
 
     mainMenu();
-
     return 0;
 }

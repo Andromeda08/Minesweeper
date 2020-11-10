@@ -22,10 +22,10 @@ typedef struct Coordinate {
 // Gameplay
 void game(GameField gf);
 void guessing(GameField gf, Coordinate guess, int cmd);
-void loseScreen(GameField gf);
 bool checkWin(GameField gf);
 void endScreen(GameField gf, bool win);
 // Data management
+void timer(GameField gf);
 char adjacentMines(GameField gf, int x, int y);
 bool isMine(GameField gf, Coordinate c);
 void floodFill(GameField gf, int x, int y);

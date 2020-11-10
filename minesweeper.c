@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdbool.h>
+#include <time.h>
 
 #include "minesweeper.h"
 #include "render.h"
@@ -12,11 +14,20 @@ void game(GameField gf) {
 
     do {
         render(gf, false);
-        printf("Format: <x> <y> <1/2> (1: guess 2: mark)\n"
-               ">");
-        scanf("%d %d %d", &guess.x, &guess.y, &cmd);
+        printf("\033[0:32mFormat: <x> <y> <1/2> (1: guess 2: mark)\n"
+               "\033[0:0m>");
+        if(checkWin(gf) == true) {
+            endScreen(gf, true);
+        }
+        while((scanf("%d %d %d", &guess.x, &guess.y, &cmd)) != 3) {
+            fflush(stdin);
+            printf("Try again!\n> ");
+        }
         guessing(gf, guess, cmd);
+
     } while (!gameover);
+
+    freeMemory(gf);
 }
 
 void guessing(GameField gf, Coordinate guess, int cmd) {
@@ -24,18 +35,16 @@ void guessing(GameField gf, Coordinate guess, int cmd) {
         if (guess.y >= 0 && guess.y <= gf.size_Y) {
             if (cmd == 1) {
                 if (isMine(gf, guess)) {
-                    gameover = true;
                     endScreen(gf, false);
                 } else {
-                    //floodFill(gf, guess.x, guess.y);
-                    gf.opened[guess.y][guess.x] = '1';
-                    gf.visible[guess.y][guess.x] = gf.field[guess.y][guess.x];
-                    if(checkWin(gf) == true) {
-                        endScreen(gf, true);
-                    }
+                    floodFill(gf, guess.x, guess.y);
+                    //gf.opened[guess.y][guess.x] = '1';
+                    //gf.visible[guess.y][guess.x] = gf.field[guess.y][guess.x];
                 }
             } else if (cmd == 2) {
-                gf.visible[guess.y][guess.x] = '?';
+                if(gf.opened[guess.y][guess.x] == '0') {
+                    gf.visible[guess.y][guess.x] = '?';
+                }
             } else {
                 printf("\033[0;31mError: Invalid format!\033[0;0m\n");
             }
@@ -74,41 +83,48 @@ bool isMine(GameField gf, Coordinate c) {
 }
 
 void floodFill(GameField gf, int x, int y) {
-    if (x >= 0 && x <= gf.size_X) {
-        if (y >= 0 && y <= gf.size_Y) {
-            if(gf.field[y][x] == '0') {
-                gf.visible[y][x] = ' ';
-                floodFill(gf, x-1, y-1);
-                floodFill(gf, x-1, y);
-                floodFill(gf, x-1, y+1);
-                floodFill(gf, x, y-1);
-                floodFill(gf, x, y+1);
-                floodFill(gf, x+1, y-1);
-                floodFill(gf, x+1, y);
-                floodFill(gf, x+1, y+1);
-            }
-        }
+    if(y < 0 || y >= gf.size_Y || x < 0 || x >= gf.size_X)
+        return;
+    if(gf.field[y][x] != '0') {
+        gf.opened[y][x] = '1';
+        gf.visible[y][x] = gf.field[y][x];
+        return;
     }
+    if(gf.opened[y][x] == '1')
+        return;
+
+    gf.visible[y][x] = ' ';
+    gf.opened[y][x] = '1';
+
+    floodFill(gf, x, y+1);
+    floodFill(gf, x, y-1);
+    floodFill(gf, x+1, y+1);
+    floodFill(gf, x+1, y);
+    floodFill(gf, x+1, y-1);
+    floodFill(gf, x-1, y+1);
+    floodFill(gf, x-1, y);
+    floodFill(gf, x-1, y-1);
 }
 
 bool checkWin(GameField gf) {
     int count = 0;
+    int toWin = gf.size_X * gf.size_Y - gf.mine_C;
     for(int y = 0; y < gf.size_Y; y++) {
         for(int x = 0; x < gf.size_X; x++) {
             if(gf.opened[y][x] == '1')
                 count++;
         }
     }
-    if(count == ((gf.size_X*gf.size_Y) - gf.mine_C)) {
+    if(count == toWin) {
         return true;
     }
     return false;
 }
 
 void endScreen(GameField gf, bool win) {
+    gameover = true;
     if(win) {
-        render(gf, false);
-        printf("╔════════════════════════════════════╗\n"
+        printf("\n╔════════════════════════════════════╗\n"
                "║ \033[0;33m            You Win!               \033[0;0m║\n"
                "╚════════════════════════════════════╝\n");
     } else {
@@ -117,5 +133,14 @@ void endScreen(GameField gf, bool win) {
                "║ \033[0;31m            You Lose!              \033[0;0m║\n"
                "╚════════════════════════════════════╝\n");
     }
-    freeMemory(gf);
+}
+
+void timer(GameField gf) {
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    unsigned int s_Sec = tm.tm_sec;
+
+
+
 }
