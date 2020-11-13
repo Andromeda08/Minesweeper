@@ -28,10 +28,9 @@ void render(GameField gf, bool reveal) {
                     printf(" \033[0;33m%c ", gf.visible[y][x]);
             } else {
                 if (gf.field[y][x] == 'x')
-                    printf("\033[0:31m");
+                    printf(" \033[0:31m%c \", gf.field[y][");
                 else
-                    printf("\033[0:36m");
-                printf(" %c ", gf.field[y][x]);
+                    printf(" \033[0:36m%c ", gf.field[y][x]);
             }
         }
         printf("\033[0;0m║\n");
