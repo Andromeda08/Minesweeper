@@ -6,8 +6,7 @@
 
 void render(GameField gf, bool reveal) {
     clearScreen();
-    resetColor();
-    printf("╔═════════════╦════════════╦═════════╗\n"
+    printf("\033[0;0m╔═════════════╦════════════╦═════════╗\n"
            "║ \033[0;36mMinesweeper \033[0;0m║ Mines: \033[0;31m%3d \033[0;0m║ \033[0;36mmin\033[0;0m:\033[0;36msec \033[0;0m║\n"
            "╚═════════════╩════════════╩═════════╝\n", gf.mine_C);
 
@@ -28,7 +27,7 @@ void render(GameField gf, bool reveal) {
                     printf(" \033[0;33m%c ", gf.visible[y][x]);
             } else {
                 if (gf.field[y][x] == 'x')
-                    printf(" \033[0:31m%c \", gf.field[y][");
+                    printf(" \033[0:31m%c ", gf.field[y][x]);
                 else
                     printf(" \033[0:36m%c ", gf.field[y][x]);
             }
@@ -45,8 +44,4 @@ void render(GameField gf, bool reveal) {
 
 void clearScreen() {
     system ("clear");
-}
-
-void resetColor() {
-    printf("\033[0;0m");
 }

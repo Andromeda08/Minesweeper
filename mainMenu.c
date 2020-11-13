@@ -12,7 +12,6 @@ GameField mf;
 void mainMenu() {
     int menuOption;
     clearScreen();
-    resetColor();
     do {
         printf("\033[0;0m╔═════════════╦══════════════════════╗\n"
                "║ \033[0;36mMinesweeper \033[0;0m║      \033[0;34mMain Menu       \033[0;0m║\n"
@@ -32,6 +31,8 @@ void mainMenu() {
                 break;
             case 2:
                 loop = false;
+                break;
+            default:
                 break;
         }
     } while(loop);
@@ -93,7 +94,7 @@ void newGame(GameField mf) {
         }
         printf("\n");
     }
-    game(mf);
+    gameLoop(mf);
 }
 
 char **allocateMemory(char **array, GameField gf) {

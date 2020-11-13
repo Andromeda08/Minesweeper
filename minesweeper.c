@@ -8,7 +8,7 @@
 
 bool gameover = false;
 
-void game(GameField gf) {
+void gameLoop(GameField gf) {
     int cmd;
     Coordinate guess;
 
