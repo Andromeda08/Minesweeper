@@ -87,13 +87,13 @@ void newGame(GameField mf) {
         }
     }
 
-    //debug render
-    for(int y = 0; y < mf.size_Y; y++) {
+    //render field array when testing the program
+    /*for(int y = 0; y < mf.size_Y; y++) {
         for(int x = 0; x < mf.size_X; x++) {
             printf(" %c ", mf.field[y][x]);
         }
         printf("\n");
-    }
+    }*/
     gameLoop(mf);
 }
 

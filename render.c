@@ -7,8 +7,8 @@
 void render(GameField gf, bool reveal) {
     clearScreen();
     printf("\033[0;0m╔═════════════╦════════════╦═════════╗\n"
-           "║ \033[0;36mMinesweeper \033[0;0m║ Mines: \033[0;31m%3d \033[0;0m║ \033[0;36mmin\033[0;0m:\033[0;36msec \033[0;0m║\n"
-           "╚═════════════╩════════════╩═════════╝\n", gf.mine_C);
+           "║ \033[0;36mMinesweeper \033[0;0m║ Mines: \033[0;31m%3d \033[0;0m║ \033[0;36m%2d\033[0;0m:\033[0;36m%2d \033[0;0m║\n"
+           "╚═════════════╩════════════╩═════════╝\n", gf.mine_C, gf.timer.min, gf.timer.sec);
 
     printf("╔");
     for(int i = 1; i < (gf.size_X * 4); i++)

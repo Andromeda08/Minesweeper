@@ -12,7 +12,14 @@ void gameLoop(GameField gf) {
     int cmd;
     Coordinate guess;
 
+    double total;
+    clock_t timer;
+
     do {
+        timer = clock();
+        total = ((double) timer)/CLOCKS_PER_SEC;
+        gf.timer.min = gf.timer.sec % 60;
+        gf.timer.sec = gf.timer.sec - (gf.timer.min * 60);
         render(gf, false);
         printf("\033[0:32mFormat: <x> <y> <1/2> (1: guess 2: mark)\n"
                "\033[0:0m>");
@@ -26,6 +33,9 @@ void gameLoop(GameField gf) {
         guessing(gf, guess, cmd);
 
     } while (!gameover);
+
+    timer = clock() - timer;
+    total = ((double) timer)/CLOCKS_PER_SEC;
 
     freeMemory(gf);
 }
@@ -136,11 +146,5 @@ void endScreen(GameField gf, bool win) {
 }
 
 void timer(GameField gf) {
-
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    unsigned int s_Sec = tm.tm_sec;
-
-
 
 }
