@@ -94,6 +94,7 @@ void newGame(GameField mf) {
         }
         printf("\n");
     }*/
+
     gameLoop(mf);
 }
 

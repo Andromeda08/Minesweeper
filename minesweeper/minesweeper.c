@@ -11,31 +11,36 @@ bool gameover = false;
 void gameLoop(GameField gf) {
     int cmd;
     Coordinate guess;
-
-    double total;
-    clock_t timer;
+    //Timer variables
+    long double total;
+    time_t start, current, elapsed;
+    start = time(NULL);
 
     do {
-
-        timer = clock();
-        total = ((double) timer)/CLOCKS_PER_SEC;
-        gf.timer.min = (int) total / 60;
-        gf.timer.sec = total - (gf.timer.min * 60);
-
+        //Calculate Time
+        current = time(NULL);
+        elapsed = current - start;
+        gf.timer.min = (int) elapsed / 60;
+        gf.timer.sec = (int) (elapsed - gf.timer.min*60);
+        //Render
         render(gf, false);
         printf("\033[0:32mFormat: <x> <y> <1/2> (1: guess 2: mark)\n"
                "\033[0:0m>");
+        //Win check
         if(checkWin(gf) == true) {
             endScreen(gf, true);
+            break;
         }
+        //User input
         while((scanf("%d %d %d", &guess.x, &guess.y, &cmd)) != 3) {
             fflush(stdin);
             printf("Try again!\n> ");
         }
+        //Act on user input
         guessing(gf, guess, cmd);
 
     } while (!gameover);
-
+    //Free memory when game ends
     freeMemory(gf);
 }
 
@@ -47,8 +52,6 @@ void guessing(GameField gf, Coordinate guess, int cmd) {
                     endScreen(gf, false);
                 } else {
                     floodFill(gf, guess.x, guess.y);
-                    //gf.opened[guess.y][guess.x] = '1';
-                    //gf.visible[guess.y][guess.x] = gf.field[guess.y][guess.x];
                 }
             } else if (cmd == 2) {
                 if(gf.opened[guess.y][guess.x] == '0') {
@@ -133,17 +136,13 @@ bool checkWin(GameField gf) {
 void endScreen(GameField gf, bool win) {
     gameover = true;
     if(win) {
-        printf("\n╔════════════════════════════════════╗\n"
-               "║ \033[0;33m            You Win!               \033[0;0m║\n"
-               "╚════════════════════════════════════╝\n");
+        printf("\n╔═════════════════════════════════════╗\n"
+               "║ \033[0;33m             You Won!               \033[0;0m║\n"
+               "╚═════════════════════════════════════╝\n");
     } else {
         render(gf, true);
-        printf("╔════════════════════════════════════╗\n"
-               "║ \033[0;31m            You Lose!              \033[0;0m║\n"
-               "╚════════════════════════════════════╝\n");
+        printf("╔═════════════════════════════════════╗\n"
+               "║ \033[0;31m             You Lost!              \033[0;0m║\n"
+               "╚═════════════════════════════════════╝\n");
     }
-}
-
-void timer(GameField gf) {
-
 }
