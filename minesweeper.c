@@ -16,10 +16,12 @@ void gameLoop(GameField gf) {
     clock_t timer;
 
     do {
+
         timer = clock();
         total = ((double) timer)/CLOCKS_PER_SEC;
-        gf.timer.min = gf.timer.sec % 60;
-        gf.timer.sec = gf.timer.sec - (gf.timer.min * 60);
+        gf.timer.min = (int) total / 60;
+        gf.timer.sec = total - (gf.timer.min * 60);
+
         render(gf, false);
         printf("\033[0:32mFormat: <x> <y> <1/2> (1: guess 2: mark)\n"
                "\033[0:0m>");
@@ -33,9 +35,6 @@ void gameLoop(GameField gf) {
         guessing(gf, guess, cmd);
 
     } while (!gameover);
-
-    timer = clock() - timer;
-    total = ((double) timer)/CLOCKS_PER_SEC;
 
     freeMemory(gf);
 }

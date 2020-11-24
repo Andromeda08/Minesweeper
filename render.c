@@ -43,5 +43,5 @@ void render(GameField gf, bool reveal) {
 }
 
 void clearScreen() {
-    system ("clear");
+    system ("cls");
 }
