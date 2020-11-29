@@ -23,8 +23,3 @@ A játék során két lépést tehet a játékos:
 
 ### A Játék Vége
 A játékos **nyert**, ha nincs már felfedezhető mező, **veszített**, ha olyan mezőt próbál felfedni ahol akna van.
-
-```
-Készítette : **Kovács Balázs**
-Neptun     : **BGM94Z**
-```

@@ -1,8 +1,4 @@
 # Aknakereső Dokumentáció
-```
-Készítette : Kovács Balázs
-Neptun     : BGM94Z
-```
 > Ez az Aknakereső **macOS** és különböző **Linux** disztribúciók alatt fut.
 ## Az Aknakereső játék megvalósítása *(Konzol  alkalmazásként)*  
 
