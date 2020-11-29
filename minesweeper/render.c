@@ -4,15 +4,18 @@
 
 #include "render.h"
 
+//#include "../vendor/debugmalloc.h"
+
+//Render
 void render(GameField gf, bool reveal) {
     clearScreen();
     printf("\033[0;0m╔═════════════╦════════════╦═════════╗\n"
            "║ \033[0;36mMinesweeper \033[0;0m║ Mines: \033[0;31m%3d \033[0;0m║ \033[0;36m%2d\033[0;0m : \033[0;36m%2d \033[0;0m║\n"
            "╚═════════════╩════════════╩═════════╝\n", gf.mine_C, gf.timer.min, gf.timer.sec);
-
-    printf("╔");
-    for(int i = 1; i < (gf.size_X * 4); i++)
-        printf("═");
+    //Felső keret
+    printf("╔═══");
+    for(int i = 1; i < gf.size_X; i++)
+        printf("╦═══");
     printf("╗\n");
 
     for (int y = 0; y < gf.size_Y; y++) {
@@ -32,14 +35,20 @@ void render(GameField gf, bool reveal) {
                     printf(" \033[0;36m%c ", gf.field[y][x]);
             }
         }
-        printf("\033[0;0m║\n");
+        printf("\033[0;0m║ \033[0;90m%3d \033[0;0m\n", y);
     }
 
-    printf("╚");
-    for(int i = 1; i < (gf.size_X * 4); i++)
-        printf("═");
+    //Alsó Keret
+    printf("╚═══");
+    for(int i = 1; i < gf.size_X; i++)
+        printf("╩═══");
     printf("╝\n");
 
+    //X Koordináták
+    printf("\033[0;90m%3d", 0);
+    for(int i = 1; i < gf.size_X; i++)
+        printf("%4d", i);
+    printf("\n");
 }
 
 void clearScreen() {

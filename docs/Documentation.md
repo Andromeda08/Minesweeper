@@ -1,24 +1,65 @@
-# **Aknakereső Dokumentáció**
+# Aknakereső Dokumentáció
+```
+Készítette : Kovács Balázs
+Neptun     : BGM94Z
+```
 > Ez az Aknakereső **macOS** és különböző **Linux** disztribúciók alatt fut.
+## Az Aknakereső játék megvalósítása *(Konzol  alkalmazásként)*  
 
-A játék már játszható állapotban van:
-- A főmenüből indíthatunk új játékot.
-- Tud játékmenetet generálni, véletlenszerű akna elhelyezéssel, felhasználói bemenet alapján.
-- A játékmenet közben minden lépés után ellenőrzi, hogy nyert-e a játékos.
-- A játékos tud megjelölni vagy felderíteni mezőket.
-- Felderítésnél minden környező nem akna mezőt felderít, és a felderített mezőknél írja hány akna van egy mező környezetében.
-- Tud hibás bemenetet kezelni.
+Az akanakereső játék célja, hogy megtalálja a játékos az összes aknát, úgy hogy azokat elkerüli.  
 
-Hiányzó funkciók:
-- A játék kezdete óta eltelt idő mérése és kiírása.
-## **minesweeper.h**
+**A programnak két nézete van:**
+- Főmenü
+- Játékmenet
+
+A főmenüből új játék indításával juthatunk el a játéknézetbe, a játék végén a program automatikusan kilép.  
+
+**A játékos megválaszthatja új játék indításakor a:**
+- Játékmező méretét \<x> \<y>
+- A játékmezőn található aknák számát \<n>
+
+**Az aknakeresőhöz szükséges funkciók:**  
+A program képes automatikusan felderíteni egy környéket, az számolni a játék kezdete óra eltelt időt, és a játékos tud megjelölni aknának gondolt mezőt.  
+- Egy mező környékének automatikus felderítését a **flood fill** rekurzív algoritmus végzi el, ami addig fut, ameddig nem talál olyan mezőt, amely környezetében akna található.
+- Az aknakereső játékban úgy tudjuk megnézni, hogy nyert-e a játékos, hogy számoljuk a már felfedett mezők számát, és az amikor az összes felfedezhető mező számával egyenlő lesz (Összes mező - Aknák száma), akkor nyert a játékos. (Ehhez szükséges az aknák száma és egy 2d tömb, amiben számontartjuk, hogy mely mezők vannak felderítve)
+
+**Megjelenítés:**
+- Akna: <span style="color:#FCAEBB">x</span>
+- A környező aknák száma: <span style="color:#F2F0A1">#</span>
+- A megjelölt mezők: <span style="color:#BF9BDE">?</span>
+- A felderítetlen mező: <span style="color:#74D1EA">-</span>
+- Sor/oszlop szám: <span style="color:#818383">#</span>
+- A feldeített mezőket space karakter jelöli
+
+## Adatszerkezetek
+A játékmenethez szükséges három 2d tömböt dinamikus memóriakezeléssel hozza létre a program. Ezt a három tömböt a **minesweeper.h**-ban található **GameField** adattípusban található. A foglalt területet a játék végén felszabadítja a program.  
+A programban nincs memóriaszivárgás, ezt a **debugmalloc** könyvtárral ellenőrizhetjük.
+``` C
+typedef struct GameField {
+    char **field, **visible, **opened;
+    int size_X, size_Y, mine_C;
+    gameTime timer;
+} GameField;
+```
+
+**További segédadatszerkezetek:**
+
+- Koordináta adattípus, X és Y koordinátát tárol.
+``` C
+typedef struct Coordinate {
+    int x, y;
+} Coordinate;
+```
+
+- Idő adattípus, a játék kezdete óta eltelt időt tárolja. (perc, másodperc formában)
 ``` C
 typedef struct gameTime {
     int min, sec;
 } gameTime;
-
-// Idő adattípus
 ```
+
+## Header File-ok
+### **minesweeper.h**
 ``` C
 typedef struct GameField {
     char **field, **visible, **opened;
@@ -42,6 +83,13 @@ typedef struct Coordinate {
 } Coordinate;
 
 // Koordináta adattípus
+```
+``` C
+typedef struct gameTime {
+    int min, sec;
+} gameTime;
+
+// Idő adattípus
 ```
 ``` C
 void gameLoop(GameField gf);
@@ -107,7 +155,7 @@ void floodFill(GameField gf, int x, int y);
 */
 ```
 
-## **mainMenu.h**
+### **mainMenu.h**
 ``` C
 void mainMenu();
 
@@ -144,7 +192,7 @@ void freeMemory(GameField gf);
 */
 ```
 
-## **render.h**
+### **render.h**
 
 ``` C
 void render(GameField gf, bool reveal);
@@ -154,4 +202,9 @@ void render(GameField gf, bool reveal);
  * Paraméterek: GameField struktúra
  * Visszatérési érték: void
 */
+```
+``` C
+void clearscreen();
+
+// system("clear") parancs
 ```

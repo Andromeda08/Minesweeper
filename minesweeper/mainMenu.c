@@ -6,9 +6,11 @@
 #include "minesweeper.h"
 #include "render.h"
 
+//#include "../vendor/debugmalloc.h"
+
 bool loop = true;
 GameField mf;
-
+//Main menu
 void mainMenu() {
     int menuOption;
     clearScreen();
@@ -37,7 +39,7 @@ void mainMenu() {
         }
     } while(loop);
 }
-
+//Create new game
 void newGame(GameField mf) {
     clearScreen();
     //get input
@@ -87,24 +89,29 @@ void newGame(GameField mf) {
         }
     }
 
-    //render field array when testing the program
-    /*for(int y = 0; y < mf.size_Y; y++) {
-        for(int x = 0; x < mf.size_X; x++) {
-            printf(" %c ", mf.field[y][x]);
-        }
-        printf("\n");
-    }*/
+    /* For quick testing with mine locations revealed
+     * set debug to true
+     */
+    bool testing = false;
+    if(testing) {
+        for (int y = 0; y < mf.size_Y; y++) {
+            for (int x = 0; x < mf.size_X; x++) {
+                printf(" %c ", mf.field[y][x]);
+            } printf("\n"); }
+    }
 
+    //Start the game by entering the game loop
     gameLoop(mf);
 }
-
+//Allocate memory for 2d array
 char **allocateMemory(char **array, GameField gf) {
     array = (char**) malloc(gf.size_Y * sizeof(char*));
-    for(int y = 0; y <= gf.size_Y; y++) {
+    for(int y = 0; y < gf.size_Y; y++) {
         array[y] = (char*) malloc(gf.size_X * sizeof(char));
     }
     return array;
 }
+//Free allocated memory
 void freeMemory(GameField gf) {
     for (int y = 0; y < gf.size_Y; y++) {
         free(gf.field[y]);

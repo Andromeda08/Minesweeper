@@ -6,6 +6,9 @@
 #include "render.h"
 #include "mainMenu.h"
 
+//#include "../vendor/debugmalloc.h"
+
+//Game status
 bool gameover = false;
 
 void gameLoop(GameField gf) {
@@ -15,7 +18,7 @@ void gameLoop(GameField gf) {
     long double total;
     time_t start, current, elapsed;
     start = time(NULL);
-
+    //Core gameloop
     do {
         //Calculate Time
         current = time(NULL);
@@ -24,14 +27,14 @@ void gameLoop(GameField gf) {
         gf.timer.sec = (int) (elapsed - gf.timer.min*60);
         //Render
         render(gf, false);
-        printf("\033[0:32mFormat: <x> <y> <1/2> (1: guess 2: mark)\n"
-               "\033[0:0m>");
         //Win check
         if(checkWin(gf) == true) {
             endScreen(gf, true);
             break;
         }
-        //User input
+        printf("\033[0:32mFormat: <x> <y> <1/2> (1: guess 2: mark)\n"
+               "\033[0:0m>");
+        //User input handling
         while((scanf("%d %d %d", &guess.x, &guess.y, &cmd)) != 3) {
             fflush(stdin);
             printf("Try again!\n> ");
@@ -43,10 +46,10 @@ void gameLoop(GameField gf) {
     //Free memory when game ends
     freeMemory(gf);
 }
-
+//Processing the players move
 void guessing(GameField gf, Coordinate guess, int cmd) {
-    if (guess.x >= 0 && guess.x <= gf.size_X) {
-        if (guess.y >= 0 && guess.y <= gf.size_Y) {
+    if (guess.x >= 0 && guess.x < gf.size_X) {
+        if (guess.y >= 0 && guess.y < gf.size_Y) {
             if (cmd == 1) {
                 if (isMine(gf, guess)) {
                     endScreen(gf, false);
@@ -63,7 +66,7 @@ void guessing(GameField gf, Coordinate guess, int cmd) {
         }
     }
 }
-
+//Count adjacent mines to a cell
 char adjacentMines(GameField gf, int x, int y) {
     int count = 0;
     if(gf.field[y][x] == 'x')
@@ -85,7 +88,7 @@ char adjacentMines(GameField gf, int x, int y) {
     char c = count + '0';
     return c;
 }
-
+//Checks if a field has a mine on it
 bool isMine(GameField gf, Coordinate c) {
     if(gf.field[c.y][c.x] == 'x') {
         return true;
@@ -93,7 +96,7 @@ bool isMine(GameField gf, Coordinate c) {
         return false;
     }
 }
-
+//Implementation of the flood fill algorithm for automatic field revealing
 void floodFill(GameField gf, int x, int y) {
     if(y < 0 || y >= gf.size_Y || x < 0 || x >= gf.size_X)
         return;
@@ -117,7 +120,7 @@ void floodFill(GameField gf, int x, int y) {
     floodFill(gf, x-1, y);
     floodFill(gf, x-1, y-1);
 }
-
+//Checks for win condition
 bool checkWin(GameField gf) {
     int count = 0;
     int toWin = gf.size_X * gf.size_Y - gf.mine_C;
@@ -132,17 +135,17 @@ bool checkWin(GameField gf) {
     }
     return false;
 }
-
+//Handle win or lose case
 void endScreen(GameField gf, bool win) {
     gameover = true;
     if(win) {
-        printf("\n╔═════════════════════════════════════╗\n"
-               "║ \033[0;33m             You Won!               \033[0;0m║\n"
-               "╚═════════════════════════════════════╝\n");
+        printf("\n╔════════════════════════════════════╗\n"
+               "║ \033[0;33m            You Won!               \033[0;0m║\n"
+               "╚════════════════════════════════════╝\n");
     } else {
         render(gf, true);
-        printf("╔═════════════════════════════════════╗\n"
-               "║ \033[0;31m             You Lost!              \033[0;0m║\n"
-               "╚═════════════════════════════════════╝\n");
+        printf("╔════════════════════════════════════╗\n"
+               "║ \033[0;31m            You Lost!              \033[0;0m║\n"
+               "╚════════════════════════════════════╝\n");
     }
 }
