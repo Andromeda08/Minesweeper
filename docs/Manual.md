@@ -1,7 +1,7 @@
 # Aknakereső Felhasználói Dokumentáció
 > Ez az Aknakereső játék **macOS** és különböző **Linux** disztribúciók alatt fut.
 ### A játék célja
-A játék célja az, hogy minden aknát megtaláljon a játékos a mezők felfedésével, amik a pályán véletlenszerűen vannak elhelyezve.
+Az akanakereső játék célja, hogy megtalálja a játékos az összes aknát, úgy hogy azokat elkerüli.
 ### A Főmenüben
 - (1) Új játékot indíthatunk, a játékos megadhatja a pálya méretét és aknák számát.  
 - (2) Kiléphetünk a játékból.

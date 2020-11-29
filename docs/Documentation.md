@@ -16,6 +16,7 @@ A főmenüből új játék indításával juthatunk el a játéknézetbe, a ját
 
 **Az aknakeresőhöz szükséges funkciók:**  
 A program képes automatikusan felderíteni egy környéket, az számolni a játék kezdete óra eltelt időt, és a játékos tud megjelölni aknának gondolt mezőt.  
+- Az aknákat véletlenszerűen helyezi el a program.
 - Egy mező környékének automatikus felderítését a **flood fill** rekurzív algoritmus végzi el, ami addig fut, ameddig nem talál olyan mezőt, amely környezetében akna található.
 - Az aknakereső játékban úgy tudjuk megnézni, hogy nyert-e a játékos, hogy számoljuk a már felfedett mezők számát, és az amikor az összes felfedezhető mező számával egyenlő lesz (Összes mező - Aknák száma), akkor nyert a játékos. (Ehhez szükséges az aknák száma és egy 2d tömb, amiben számontartjuk, hogy mely mezők vannak felderítve)
 
@@ -195,7 +196,7 @@ void render(GameField gf, bool reveal);
 
 /* Kirajzolja a pályát, amit a játékos láthat.
  * Ha a második paraméter true, feldedve rajzolja ki a pályát.
- * Paraméterek: GameField struktúra
+ * Paraméterek: GameField struktúra, bool érték
  * Visszatérési érték: void
 */
 ```
