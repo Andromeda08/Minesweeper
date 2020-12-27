@@ -4,8 +4,6 @@
 
 #include "render.h"
 
-//#include "../vendor/debugmalloc.h"
-
 //Render
 void render(GameField gf, bool reveal) {
     clearScreen();

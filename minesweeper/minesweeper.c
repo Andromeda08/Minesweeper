@@ -6,8 +6,6 @@
 #include "render.h"
 #include "mainMenu.h"
 
-//#include "../vendor/debugmalloc.h"
-
 //Game status
 bool gameover = false;
 

@@ -6,8 +6,6 @@
 #include "minesweeper.h"
 #include "render.h"
 
-//#include "../vendor/debugmalloc.h"
-
 bool loop = true;
 GameField mf;
 //Main menu

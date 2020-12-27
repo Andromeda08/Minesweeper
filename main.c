@@ -5,8 +5,6 @@
 #include "minesweeper/render.h"
 #include "minesweeper/mainMenu.h"
 
-//#include "vendor/debugmalloc.h"
-
 int main(void) {
     //Random generator
     srand(time(NULL));
